@@ -1,8 +1,8 @@
 name: Walking On
 author: 空中的风景
 encoding: utf-8
-markdown: rdiscount
-pygments: true
+markdown: redcarpet
+highlighter: pygments
 description: 一阶一景，路漫漫
 baseurl: 
 github: http://www.github.com/hejun-lyne

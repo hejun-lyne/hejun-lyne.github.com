@@ -10,3 +10,5 @@ tagline: code design
 
 ####技术
 1. [代码之迷](http://justjavac.com/)
+
+为何不生效

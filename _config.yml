@@ -1,9 +1,10 @@
 name: Walking On
 author: 空中的风景
-markdown: redcarpet
+encoding: utf-8
+markdown: rdiscount
 pygments: true
 description: 一阶一景，路漫漫
-baseurl: http://hejun-lyne.github.io
+baseurl: 
 github: http://www.github.com/hejun-lyne
 diandian: http://hejun-lyne.diandian.com/
 email: hejun.lyne[at]gmail.com.com

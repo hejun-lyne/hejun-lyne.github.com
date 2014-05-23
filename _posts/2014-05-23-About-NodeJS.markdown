@@ -1,8 +1,8 @@
 ---
 layout: post
 title: NodeJS点滴
+tags: [node.js,javascript]
 ---
-#NodeJS点滴
 
 NodeJS看起来挺有趣的，可以重拾许久未用的JavaScript～，这篇是看[Node入门](http://www.nodebeginner.org/index-zh-cn.html)的一些简单记录。
 安装很简单
@@ -58,7 +58,8 @@ server.start();
 -----
 首先是需要为request的路由提供请求的url和参数，那么怎么提取这些信息呢？Node已经有现成的模块完成这个工作了，就是`url`和`querystring`模块：
 {% highlight javascript %}
-                                url.parse(string).query
+                                
+.................................url.parse(string).query
                                            |
            url.parse(string).pathname      |
                        |                   |

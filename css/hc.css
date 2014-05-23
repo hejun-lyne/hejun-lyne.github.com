@@ -358,6 +358,16 @@ pre
   font-family:"Helvetica Neue", helvetica, "Open Sans", sans-serif;
 }
 
+.btn-tag
+{
+	font-size: 12px;
+	background-color: #aaa;
+	border: 0;
+	border-radius: 3px;
+	padding: 2px 5px;
+	color:white;
+}
+
 .showcase-button:hover
 {
   border:1px solid rgba(255,255,255,1);

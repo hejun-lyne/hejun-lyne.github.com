@@ -3,7 +3,16 @@ layout: article
 ---
   <div id="article">
    <div class="article-title">{{ page.title }}</div>
-   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> {{ page.date | date_to_string}}</small></p> <hr/>
+   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> {{ page.date | date_to_string}}</small>
+   {% if page.tags %}
+    <span class="tags">
+        {% for tag in page.tags %}
+            <!--<a href="/tags/#{{ tag }}" title="{{ tag }}">#{{ tag }}</a>-->
+            &nbsp;&nbsp;<a href="/tags/#{{ tag }}" ><button type="button" class="btn btn-tag">{{ tag }}</button></a>
+        {% endfor %}
+    </span>
+ {% endif %}
+ </p>
    <div class="post">
      {{ content }}
    </div>

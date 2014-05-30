@@ -13,7 +13,7 @@ body
 h1,h2,h3,h4,h5,h6
 {
   font-family:"Helvetica Neue", helvetica, "Open Sans", sans-serif;
-  color:#d90006
+  color:#333/*#d90006*/
 }
 
 h1
@@ -43,6 +43,14 @@ p
   font-weight:200
 }
 
+th, td {
+  line-height: 2em;
+}
+
+.post td,th {
+  border: 1px solid gray;
+}
+
 .posts
 {
   font-size:20px;
@@ -59,9 +67,9 @@ p
 
 .container
 {
-  width:80%;
+  width:90%;
   padding-right:0;
-  padding-top:30px
+  padding-top:20px
 }
 
 .container a
@@ -331,7 +339,8 @@ pre
   padding-top:5px;
   margin-top:40px;
   z-index:1;
-  color:#cdcdcd
+  color:#cdcdcd;
+  text-align: center;
 }
 
 .label-danger
@@ -573,7 +582,7 @@ time
 
 .card
 {
-  margin-left:-40px;
+  margin-left:-20px;
   margin-top:-10px
 }
 
@@ -585,42 +594,42 @@ time
   text-shadow:1px 1px #fff
 }
 
-.fashion
+.design
 {
   border-left:solid 2px #bc0005
 }
 
-.fashion-button
+.design-button
 {
   background-color:#bc0005
 }
 
-.fashion:hover
+.design:hover
 {
   border-left:solid 2px #f40006
 }
 
-.fashion-button:hover
+.design-button:hover
 {
   background-color:#f40006
 }
 
-.programming
+.coding
 {
   border-left:solid 2px #7dbcb2
 }
 
-.programming-button
+.coding-button
 {
   background-color:#7dbcb2
 }
 
-.programming:hover
+.coding:hover
 {
   border-left:solid 2px #bbe9e2
 }
 
-.programming-button:hover
+.coding-button:hover
 {
   background-color:#bbe9e2
 }
@@ -665,22 +674,22 @@ time
   background-color:#cfe0ea
 }
 
-.podcasts
+.resources
 {
   border-left:solid 2px #387b94
 }
 
-.podcasts-button
+.resources-button
 {
   background-color:#387b94
 }
 
-.podcasts:hover
+.resources:hover
 {
   border-left:solid 2px #2FD0EF
 }
 
-.podcasts-button:hover
+.resources-button:hover
 {
   background-color:#2FD0EF
 }
@@ -752,13 +761,11 @@ time
       padding: 0 10px 0 10px;
   }
 
-
-
-
-.showcase-wrapper {
-  width: 100%;
-  height: 50%;
-  font-size: small;
+  .showcase-wrapper {
+    width: 100%;
+    height: 50%;
+    font-size: small;
+  }
 }
 
-}
+

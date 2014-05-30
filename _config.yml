@@ -2,14 +2,16 @@ name: Walking On
 author: 空中的风景
 encoding: utf-8
 markdown: redcarpet
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
 highlighter: pygments
 description: 一阶一景，路漫漫
 baseurl: 
 github: http://www.github.com/hejun-lyne
 diandian: http://hejun-lyne.diandian.com/
-email: hejun.lyne[at]gmail.com.com
-location: 42°2'16"N   70°12'47"W
-disqus: diqus-username
+email: hejun.lyne@gmail.com
+location: 30.280738°N   120.027854°E
+disqus: hejun
 
 ##Make sure to edit the above fields, especially for disqus.
 

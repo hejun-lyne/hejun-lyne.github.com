@@ -2,7 +2,9 @@
 title: What is this, anyway?
 layout: post
 date: 2013-12-08 19:55:16
-categories: jekyll testing
+category: jekyll
+url: What-is-this-anyway.html
+summary: 关于Jekyll
 ---
 
 

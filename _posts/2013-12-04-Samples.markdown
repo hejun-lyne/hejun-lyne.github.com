@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Samples
+category: markdown
+url: Samples.html
+summary: 如何使用markdown编写post
 ---
 
 # Samples

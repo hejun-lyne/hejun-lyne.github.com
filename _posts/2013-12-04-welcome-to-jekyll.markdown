@@ -2,7 +2,9 @@
 layout: post
 title:  "Welcome to Jekyll!"
 date:   2013-11-08 19:55:16
-categories: jekyll update
+category: jekyll
+url: welcome-to-jekyll.html
+summary: 开始Jekyll
 ---
 
 You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!

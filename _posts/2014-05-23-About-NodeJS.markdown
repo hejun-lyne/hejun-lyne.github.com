@@ -1,9 +1,7 @@
 ---
 layout: post
 title: NodeJS点滴
-category: node
-url: About-NodeJS.html
-summary: Node入门的一些简单笔记
+tags: [node.js,javascript]
 ---
 
 NodeJS看起来挺有趣的，可以重拾许久未用的JavaScript～，这篇是看[Node入门](http://www.nodebeginner.org/index-zh-cn.html)的一些简单记录。

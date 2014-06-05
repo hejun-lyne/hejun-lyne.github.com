@@ -1,9 +1,6 @@
 ---
 layout: post
 title: Google Java Style 中文（自翻）
-category: java
-url: Google-Java-Style.html
-summary: 谷歌Java语言编程规范，中文翻译（自翻）
 ---
 
 该文档翻译自<http://google-styleguide.googlecode.com/svn/trunk/javaguide.html>

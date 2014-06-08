@@ -1,0 +1,529 @@
+---
+layout: post
+title: Swift编程语言（1）
+category: swift
+url: Swift-1.html
+summary: 《The Swift Programming Language》的学习翻译，介绍&入门
+---
+
+###Swift介绍
+Swift创造者为苹果开发者工具部门总监克里斯·拉特纳 （Chris Lattner），用时不到4年。<br />
+Swift基于`C`和`Object-C`，采纳了这两种语言的优点，而没有C的兼容性方面的约束。Swift让编程更加容易、灵活和有趣。Swift是基于通过成熟的广受欢迎的`Cocoa`和`Cocoa Touch`框架。<br />
+Swift采用了Object-C的命名参数和动态对象模型，可以无缝访问已有的Cocoa框架，与Object-C代码混合使用。<br />
+Swift支持`playgrounds`，方便编程人员可以随意实验Swift代码并马上看到执行结果，而不需要编译并执行整个App。<br />
+Swift被设计成可以从"hello world"扩展到一整个的操作系统。
+###Swift入门
+####简单值(Values)
+使用`let`声明常量，使用`var`声明变量。常量必须只赋值一次，然后在多处使用。
+{% highlight js %}
+var mayVariable = 42
+myVariable = 50
+let myConstant = 42
+{% endhighlight %}
+编译器根据变量和常量在创建时候所赋予的值知道其类型。如果没有初值或者无法确定其类型则应显式声明其类型。
+{% highlight js %}
+let implicitInteger = 70
+let implicitDouble = 70.0
+let explicitDouble: Double = 70
+{% endhighlight %}
+无隐式类型转换，必须使用显式类型转换。
+{% highlight js %}
+let label = "The width is"
+let width = 94
+let widthLabel = lable + String(width)
+{% endhighlight %}
+另外一种在字符串中使用values的方法：
+{% highlight js %}
+let apples = 3
+let oranges = 5
+let appleSummary = "I hava \(apples) apples."
+let fruitSummary = "I have \(apples + oranges) pieces of fruit."
+{% endhighlight %}
+关于数组（arrays）和字典（dictionaries）
+{% highlight js %}
+var shoppingList = ["catfish", "water", "tulips", "blue paint"]
+shoppingList[1] = "bottle of water"
+var occupations = [
+    "Malcolm": "Captain",
+    "Kaylee": "Mechanic",
+]
+occupations["Jayne"] = "Public Relations"
+{% endhighlight %}
+创建空数组和字典，使用初始化格式`()`：
+{% highlight js %}
+let emptyArray = String[]()
+let emptyDictionary = Dictionary<String, Float>();
+{% endhighlight %}
+如果不想指定数组和字典的值类型，那么可以直接以`[]`和`[:]`声明空数组和字典：
+{% highlight js %}
+shoppingList = []
+customDictionary = [:]
+{% endhighlight %}
+####控制流
+条件判断使用`if`和`switch`，循环使用`for-in`、`for`、`while`和`do-while`，条件和循环变量的括号是可选的：
+{% highlight js %}
+let individualScores = [75, 43, 103, 87, 12]
+var teamScore = 0
+for score in individualScores {
+    if score > 50 {
+        teamScore += 3
+    } else {
+        teamScroe += 1
+    }
+}
+teamScore
+{% endhighlight %}
+条件判断的表达式必须是布尔表达式，即`if score { ... }`是错误的写法。
+可选的values，即可能为`nil`，在变量的类型后面使用`?`来表示该value是可选的。
+{% highlight js %}
+var optionalString: String? = "Hello"
+optionalString == nil
+var optionalName: String? = "John Appleseed"
+var greeting = "Hello!"
+if let name = optionalName {
+    greeting = "Hello, \(name)"
+}
+{% endhighlight %}
+Switch支持任意类型的数据和各种类型的比较操作：
+{% highlight js %}
+let vegetable = "red pepper"
+switch vegetable {
+    case "celery":
+        let vegetableComment = "Add some raisins and make ants on a log."
+    case "cucumber", "watercress":
+        let vegetableComment = "That would make a good tea sandwich."
+    case let x where x.hasSuffix("pepper"):
+        let vegetableComment = "Is it a spicy \(x)?"
+    default:
+    let vegetableComment = "Everything tastes good in soup."
+}
+{% endhighlight %}
+不需要在每一个switch case的代码块使用`break`，执行完毕会自动跳出。
+`for-in`用于字典的循环遍历：
+{% highlight js %}
+let interestingNumbers = {
+    "Prime": [2, 3, 5, 7, 11, 13],
+    "Fibonacci": [1, 1, 2, 3, 5, 8],
+    "Square": [1, 4, 9, 16, 25],
+}
+//
+var largest = 0
+for (kind, numbers) in interestingNumbers {
+    for number in numbers {
+        if number > largest {
+            largest = number
+        }
+    }
+}
+largest
+{% endhighlight %}
+`while`的使用，可以在前或后
+{% highlight js %}
+var n = 2
+while n < 100 {
+    n = n * 2
+}
+n
+//
+var m = 2
+do {
+    m = m * 2
+} while m < 100
+m
+{% endhighlight %}
+进行范围遍历：
+{% highlight js %}
+var firstForLoop = 0
+for i in 0..3 {
+    firstForLoop += i
+}
+firstForLoop
+//
+var secondForLoop = 0
+for var i = 0; i < 3; ++i {
+    secondForLoop += 1
+}
+secondForLoop
+{% endhighlight %}
+使用`..`的时候是忽略上边界值，`...`包括上下边界值。
+####函数和闭包
+使用`func`声明函数，函数名字跟着括号里面的参数列表调用函数。使用`->`分隔参数名字和函数的返回值类型。
+{% highlight js %}
+func greet(name: String, day: String) -> String {
+    return "Hello \(name), today is \(day)."
+}
+greet("Bob", "Tuesday")
+{% endhighlight %}
+使用元组（tuple）返回多个值
+{% highlight js %}
+func getGasPrices() -> (Double, Double, Double) {
+    return (3.59, 3.69, 3.79)
+}
+getGasPrices()
+{% endhighlight %}
+函数也可以接受可变数量的变量输入，使用数组。
+{% highlight js %}
+func sumOf(numbers: Int...) -> Int {
+    var sum = 0
+    for number in numbers {
+        sum += number
+    }
+    return sum
+}
+sumOf()
+sumOf(42, 579, 12)
+{% endhighlight %}
+函数可以嵌套，嵌套的函数可以访问外部函数声明的变量，可以使用嵌套函数来组织比较长或者复杂的函数。
+{% highlight js %}
+func returnFifteen() -> Int {
+    var y = 10
+    func add() {
+        y += 5
+    }
+    add()
+    return y
+}
+returnFifteen()
+{% endhighlight %}
+函数为first-class类型，表示一个函数可以返回另外一个函数作为值。
+{% highlight js %}
+func makeIncrementer() -> (Int -> Int) {
+    func addOne(number: Int) -> Int {
+        return 1 + number
+    }
+    return addOne
+}
+var increment = makeIncrementer()
+increment(7)
+{% endhighlight %}
+同样，函数也可以作为参数
+{% highlight js %}
+func hasAnyMatches(list: Int[], condition: Int -> Bool) -> Bool {
+    for item in list {
+        if condition(item) {
+            return true
+        }
+    }
+    return false
+}
+func lessThanTem(number: Int) -> Bool {
+    return number < 10
+}
+var numbers = [20, 19, 7, 12]
+hasAnyMatches(numbers, lessThanTem)
+{% endhighlight %}
+函数实际上是闭包的特殊情况，你可以直接写一个没有名字的闭包，只需要用`{}`把代码括起来就好了，使用`in`将参数&返回类型从body中分隔开来。
+{% highlight js %}
+numbers.map({
+    (number: Int) -> Int in
+    let result = 3 * number
+    return result
+})
+{% endhighlight %}
+如果闭包的类型是已知的，比如delegate的回调，那么可以省略其参数类型、返回类型。单行的闭包返回该语句的执行结果。
+{% highlight js %}
+numbers.map({number in 3 * number})
+{% endhighlight %}
+你可以使用数字来代替名字访问参数。作为最好一个参数传递给函数的闭包，可以直接写在括号的后面。
+{% highlight js %}
+sort([1, 5, 3, 12, 2]) {$0 > $1}
+{% endhighlight %}
+####对象和类型
+在类名字前面加`class`来创建类。
+{% highlight js %}
+class Shape {
+    var numberOfSides = 0
+    func simpleDescription() -> String {
+        return "A shape with \(numberOfSides) sides."
+    }
+}
+{% endhighlight %}
+创建类实例和访问类属性。
+{% highlight js %}
+var shape = Shape()
+shape.numberOfSides = 7
+var shapeDescription = shape.simpleDescription()
+{% endhighlight %}
+使用`init`方法来初始化
+{% highlight js %}
+class NamedShape {
+    var numberOfSides: Int = 0
+    var name: String
+    //
+    init(name: String) {
+        self.name = name
+    }
+    //
+    func simpleDescription() -> String {
+        return "A shape with \(numberOfSides) sides."
+    }
+}
+{% endhighlight %}
+使用`deinit`来反初始化。
+子类在类名后面跟着父类的名字，使用`:`分隔，如果子类方法是重写父类方法需要使用`override`标记。
+{% highlight js %}
+class Square: NamedShape {
+    var sideLength: Double
+    //
+    init(sideLength: Double, name: String) {
+        seld.sideLength = sideLength
+        super.init(name: name)
+        numberOfSides = 4
+    }
+    //
+    func area() -> Double {
+        return sideLength * sideLength
+    }
+    //
+    override func simpleDescription() -> String {
+        return "A square with sides of length \(sideLength)."
+    }
+}
+let test = Square(sidelength: 5.2, name:"my test square")
+test.area()
+test.simpleDescription()
+{% endhighlight %}
+属性可以有`getter`和`setter`方法：
+{% highlight js %}
+class EquilateralTriangle: NamedShape {
+    var sideLength: Double = 0.0
+    //
+    init(sideLength: Double, name: String) {
+        self.sideLength = sideLength
+        super.init(name: name)
+        numberOfSides = 3
+    }
+    //
+    var perimeter: Double {
+    get {
+        return 3.0 * sideLength
+    }
+    set {
+        sideLength = newValue / 3.0
+    }
+    }
+    override func simpleDescription() -> String {
+        return "An equilateral triagle with sides of length \(sideLength)."
+    }
+}
+var triangle = EquilateralTriangle(sideLength: 3.1, name: "a triangle")
+triangle.perimeter
+triangle.perimeter = 9.9
+triangle.sideLength
+{% endhighlight %}
+在`setter`中新的值有明确的名字`newValue`，你也可以在`set`后面的括号中指定其名字。
+注意`EquilateralTriangle`类的初始化有3个步骤：
+1. 设置子类声明的属性的值。
+2. 调用父类的初始化。
+3. 改变子类定义的属性的值。以及其他额外的初始化工作。
+
+`willSet`和`didSet`方法。
+{% highlight js %}
+class TriangleAndSquare {
+    var triangle: EquilateralTriangle {
+    willSet {
+        square.sideLength = newValue.sideLength
+    }
+    }
+    var square: Square {
+    willSet {
+        triangle.sideLength = newValue.sideLength
+    }
+    }
+    init(size: Double, name: String) {
+        square = Square(sideLength: size, name: name)
+        triangle = EquilateralTriangle(sideLength: size,
+        name: name)
+    }
+}
+var triangleAndSquare = TriangleAndSquare(size: 10, name: "another test shape")
+triangleAndSquare.square.sideLength
+triangleAndSquare.triangle.sideLength
+triangleAndSquare.square = Square(sideLength: 50, name: "larger square")
+triangleAndSquare.triangle.sideLength
+{% endhighlight %}
+函数的参数可以使用别名。
+{% highlight js %}
+class Counter {
+    var count: Int = 0
+    func incrementBy(amout: Int, numberOfTimes times: Int) {
+        count += amount * times
+    }
+}
+var counter = Counter()
+counter.incrementBy(2, numberOfTimes: 7)
+{% endhighlight %}
+`?`的使用，如果符号前的值为nil，那么符号后面所有的代码都会被忽略。
+{% highlight js %}
+let optionalSquare: Square? = Square(sideLength: 2.5, name: "optional square")
+let sideLength = optionalSquare?.sideLength;
+{% endhighlight %}
+####枚举和结构
+使用`enum`创建枚举。
+{% highlight js %}
+enum Rank: Int {
+    case Ace = 1
+    case Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten
+    case Jack, Queen, King
+    func simpleDescription() -> String {
+        switch self {
+        case .Ace:
+            return "ace"
+        case .Jack:
+            return "jack"
+        case .Queen:
+            return "queen"
+        case .King:
+            return "king"
+        default:
+            return String(self.toRaw())
+        }
+    }
+}
+let ace = Rank.Ace
+let aceRawValue = ace.toRaw()
+{% endhighlight %}
+使用`toRaw`和`fromRaw`函数进行转换
+{% highlight js %}
+if let convertedRank = Rank.fromRaw(3) {
+    let threeDescription = convertedRank.simpleDescription()
+}
+{% endhighlight %}
+字符串值的enum。
+{% highlight js %}
+enum Suit {
+    case Spades, Hearts, Diamonds, Clubs
+    func simpleDescription() -> String {
+        switch self {
+        case .Spades:
+            return "spades"
+        case .Hearts:
+            return "hearts"
+        case .Diamonds:
+            return "diamonds"
+        case .Clubs:
+            return "clubs"
+        }
+    }
+}
+let hearts = Suit.Hearts
+let heartsDescription = hearts.simpleDescription()
+{% endhighlight %}
+注意到如果已经知道值的类型的时候，可以直接使用`.Hearts`，而在常量定义中则需要使用`Suit.Hearts`。
+使用`struct`来创建结构。structures和classes之间最大的差别是structures在传递过程中始终是使用复制的方式，而classes则是通过引用传递。
+{% highlight js %}
+struct Card {
+    var rank: Rank
+    var suit: Suit
+    func simpleDescription() -> String {
+        return "The \(rank.simpleDescription()) of \(suit.simpleDescription())"
+    }
+}
+let threeOfSpades = Card(rank: .Three, suit: .Spades)
+let threeOfSpadesDescription = threeOfSpades.simpleDescription()
+{% endhighlight %}
+枚举成员的raw value对所有的实例都是一样的，是在定义枚举的时候提供；associated values是在创建实例的时候提供，每个实例都是不同的。
+{% highlight js %}
+enum ServerResponse {
+    case Result(String, String)
+    case Error(String)
+}
+// 
+let success = ServerResponse.Result("6:00 am", "8:09 pm")
+let failure = ServerResponse.Error("Out of cheese.")
+//
+switch success {
+case let .Result(sunrise, sunset):
+    let serverResponse = "Sunrise is at \(sunrise) and sunset is at \(sunset)."
+case let .Error(error):
+    let serverResponse = "Failure...  \(error)"
+}
+{% endhighlight %}
+注意通过switch cases的对`ServerResponse`值的部分匹配，从而提取sunrise和sunset时间。
+####协议（Protocols）和扩展（Extensions）
+使用`protocol`来声明协议
+{% highlight js %}
+protocol ExampleProtocol {
+    var simpleDescription: String { get }
+    mutating func adjust()
+}
+{% endhighlight %}
+类、枚举和结构都可以使用协议。
+{% highlight js %}
+class SimpleClass: ExampleProtocol {
+    var simpleDescription: String = "A very simple class."
+    var anotherProperty: Int = 69105
+    func adjust() {
+        simpleDescription += "  Now 100% adjusted."
+    }
+}
+var a = SimpleClass()
+a.adjust()
+let aDescription = a.simpleDescription
+//
+struct SimpleStructure: ExampleProtocol {
+    var simpleDescription: String = "A simple structure"
+    mutating func adjust() {
+        simpleDescription += " (adjusted)"
+    }
+}
+var b = SimpleStructure()
+b.adjust()
+let bDescription = b.simpleDescription
+{% endhighlight %}
+在`SimpleStructure`中使用`mutating`关键字来标记会改变该结构体的方法。而`SimpleClass`的方法不需要被标记，因为一个class的方法始终都可以改变该class。
+使用`extension`为已存在的类型添加新功能，例如新的方法和计算属性（computed properties）
+{% highlight js %}
+extension Int: ExampleProtocol {
+    var simpleDescription: String {
+    return "The number \(self)"
+    }
+    mutating func adjust() {
+        self += 42
+    }
+}
+7.simpleDescription
+{% endhighlight %}
+当使用类型为protocol的values的时候，使用不属于protocol定义的方法会出错。
+{% highlight js %}
+let protocolValue: ExampleProtocol = a
+protocolValue.simpleDescription
+// protocolValue.anotherProperty // Uncomment to see the error
+{% endhighlight %}
+即使`protocolValue`的runtime类型为`SimpleClass`，编译器也会把其当作`ExampleProtocol`对待。
+####泛型（Generics）
+{% highlight js %}
+func repeat<ItemType>(item: ItemType, times: Int) -> ItemType[] {
+    var result = ItemType[]()
+    for i in 0..times {
+        result += item
+    }
+    return result
+}
+repeat("knock", 4)
+{% endhighlight %}
+函数、方法、类、枚举和结构都可以使用泛型。
+{% highlight js %}
+// Reimplement the Swift standard library's optional type
+enum OptionalValue<T> {
+    case None
+    case Some(T)
+}
+var possibleInteger: OptionalValue<Int> = .None
+possibleInteger = .Some(100)
+{% endhighlight %}
+使用`where`来对泛型类型添加限定条件。
+{% highlight js %}
+func anyCommonElements <T, U where T: Sequence, U: Sequence, T.GeneratorType.Element: Equatable, T.GeneratorType.Element == U.GeneratorType.Element> (lhs: T, rhs: U) -> Bool {
+    for lhsItem in lhs {
+        for rhsItem in rhs {
+            if lhsItem == rhsItem {
+                return true
+            }
+        }
+    }
+    return false
+}
+anyCommonElements([1, 2, 3], [3])
+{% endhighlight %}
+可以这样简化：`<T: Equatable>`和`<T where T: Equatable> `是等同的。

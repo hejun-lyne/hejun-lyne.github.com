@@ -1,0 +1,284 @@
+---
+layout: post
+title: Swift编程语言（2）
+category: swift
+url: Swift-2.html
+summary: 《The Swift Programming Language》的学习翻译，基础
+---
+###语言指南
+####基础
+Swift提供的基础类型包括：`Int`、`Double`、`Float`、`Bool`、`String`、`Array`、`Dictionary`。
+与Obejct-C不同，支持元组数据返回。可选类型，用`nil`来表示无，nil可用于任何类型，不仅仅是classes，这要比Object-C中的nil指针更加给力。
+Swift是类型安全的编程语言。
+####常量和变量
+**声明常量和变量**<br />
+使用`let`和`var`关键字。
+{% highlight js %}
+let maximumNumberOfLoginAttempts = 10
+var currentLoginAttempt = 0
+{% endhighlight %}
+类型注释，在名字后面加冒号和类型。
+{% highlight js %}
+var welcomMessage: String
+{% endhighlight %}
+一般情况下如果有初值的话， Swift能够根据初值知道类型，不需要类型注释。
+**命名常量和变量**<br />
+可以使用任意字符，包括Unicode。
+{% highlight js %}
+let π = 3.14159
+let 你好 = "你好世界"
+{% endhighlight %}
+**打印常量和变量**<br />
+使用`println`函数
+{% highlight js %}
+println(friendlyWelcome)
+// prints "Bonjour!"
+{% endhighlight %}
+**评论**<br />
+{% highlight js %}
+// this is a comment
+/* this is also a comment,
+but written over multiple lines */
+{% endhighlight %}
+**分号**<br />
+Swift不要求在语句之后必须写分号（;），当你想在一行写下多个语句的时候就必须使用。
+{% highlight js %}
+let cat = "cat"; println(cat)
+// prints "cat"
+{% endhighlight %}
+**整型（Integers）**<br />
+整型可以是signed或unsigned，包括8、16、32、和64位格式的，命名格式和C类似，如`UInt8`、`Int32`。
+**整型边界**<br />
+可以用`min`和`max`访问每一个整型类型的最大最小值。
+{% highlight js %}
+let minValue = UInt8.min  // minValue is equal to 0, and is of type UInt8
+let maxValue = UInt8.max  // maxValue is equal to 255, and is of type UInt8
+{% endhighlight %}
+**Int**<br />
+提供当前平台“native word size”的整型。
+* 32位系统，等同`Int32`。
+* 64位系统，等同`Int64`。
+
+**UInt**<br />
+同理，为Int的unsigned版本。
+
+**浮点数**<br />
+* `Double`表示64位的浮点数，只有在要求表示范围非常大和非常精确的时候使用（至少15个小数位的精度）。
+* `Float`表示32位的浮点数，不需要64位精度的时候使用（最多6个小数位）。
+
+**类型安全和类型推定（Inference）**<br />
+Swift在编译时会进行类型检查，如果出现类型不匹配会标记为错误。
+当没有指定类型的时候，Swift使用*type inference*来得到合适的类型。
+{% highlight js %}
+let meaningOfLife = 42
+// meaningOfLife is inferred to be of type Int
+let pi = 3.14159
+// pi is inferred to be of type Double
+let anotherPi = 3 + 0.14159
+// anotherPi is also inferred to be of type Double
+{% endhighlight %}
+
+**Numeric Literals**<br />
+* 十进制，无前缀
+* 二进制，`0b`前缀
+* 八进制，`0o`前缀
+* 十六进制，`0x`前缀
+
+{% highlight js %}
+let decimalInteger = 17
+let binaryInteger = 0b10001       // 17 in binary notation
+let octalInteger = 0o21           // 17 in octal notation
+let hexadecimalInteger = 0x11     // 17 in hexadecimal notation
+{% endhighlight %}
+* `1.25e2`表示$1.25 × 10^2$, 或125.0。
+* `1.25e-2`表示$1.25 × 10^-2$, 或0.0125。
+
+十六进制则是以2为基数：
+* `0xFp2`表示$15 × 2^2$, 或60.0。
+* `0xFp-2`表示$15 × 2^-2$, 或3.75。
+
+为了增加可读性，额外的0和下划线都是可以的：
+{% highlight js %}
+let paddedDouble = 000123.456
+let oneMillion = 1_000_000
+let justOverOneMillion = 1_000_000.000_000_1
+{% endhighlight %}
+####数值类型转换
+**整型转换**<br />
+{% highlight js %}
+let cannotBeNegative: UInt8 = -1
+// UInt8 cannot store negative numbers, and so this will report an error
+let tooBig: Int8 = Int8.max + 1
+// Int8 cannot store a number larger than its maximum value,
+// and so this will also report an error
+{% endhighlight %}
+不同类型的值不能直接相加，需要进行显式转换：
+{% highlight js %}
+let twoThousand: UInt16 = 2_000
+let one: UInt8 = 1
+let twoThousandAndOne = twoThousand + UInt16(one)
+{% endhighlight %}
+`SomeType(ofInitialValue)`默认调用Swift类型的初始化方法并传递初值。
+
+**整型和浮点数转换**<br />
+必须使用显式转换：
+{% highlight js %}
+let three = 3
+let pointOneFourOneFiveNine = 0.14159
+let pi = Double(three) + pointOneFourOneFiveNine
+// pi equals 3.14159, and is inferred to be of type Double
+{% endhighlight %}
+浮点数转换为整型为截断转换，比如`4.75`转换为`4`。
+
+**类型别名**<br />
+使用`typealias`关键字。
+{% highlight js %}
+typealias AudioSample = UInt16
+var maxAmplitudeFound = AudioSample.min
+// maxAmplitudeFound is now 0
+{% endhighlight %}
+
+**Booleans**<br />
+Swift中基础的*Boolean*类型为`Bool`。有两个布尔常量值：`true`和`false`。
+{% highlight js %}
+let orangesAreOrange = true
+let turnipsAreDelicious = false
+{% endhighlight %}
+Boolean值在条件语句中使用：
+{% highlight js %}
+if turnipsAreDelicious {
+    println("Mmm, tasty turnips!")
+} else {
+    println("Eww, turnips are horrible")
+}
+// prints "Eww, turnips are horrible."
+{% endhighlight %}
+Swift的类型安全不允许使用非Boolean类型的值来代替`Bool`。如下面的例子会出现编译错误：
+{% highlight js %}
+let i = 1
+if i {
+    // this example will not compile, and will report an error
+}
+{% endhighlight %}
+而应该如此使用：
+{% highlight js %}
+let i = 1
+if i == 1 {
+    // this example will compile successfully
+}
+{% endhighlight %}
+
+**元组（Tuples）**<br />
+例如`(404, "Not Found")`就是一个描述*HTTP状态码*的元组。
+{% highlight js %}
+let http404Error = (404, "Not Found")
+// http404Error is of type (Int, String), and equals (404, "Not Found")
+{% endhighlight %}
+可以描述为类型`(Int, String)`的元组。
+下面展示了如何访问元组的元数据：
+{% highlight js %}
+let (statusCode, statusMessage) = http404Error
+println("The status code is \(statusCode)")
+// prints "The status code is 404"
+println("The status message is \(statusMessage)")
+// prints "The status message is Not Found"
+{% endhighlight %}
+如果只需要元组的一部分值，那么可以使用`_`来忽略其他值：
+{% highlight js %}
+let (justTheStatusCode, _) = http404Error
+println("The status code is \(justTheStatusCode)")
+// prints "The status code is 404"
+{% endhighlight %}
+也可以使用索引来访问，从0开始：
+{% highlight js %}
+println("The status code is \(http404Error.0)")
+// prints "The status code is 404"
+println("The status message is\(http404Error.1)")
+// prints "The status message is Not Found"
+{% endhighlight %}
+可以在定义元组的时候给每个值命名：
+{% highlight js %}
+let http200Status = (statusCode: 200, description: "OK")
+{% endhighlight %}
+这样就可以根据名字来访问值了：
+{% highlight js %}
+println("The status code is \(http200Status.statusCode)")
+// prints "The status code is 200"
+println("The status message is \(http200Status.description)")
+// prints "The status message is OK"
+{% endhighlight %}
+元组在作为函数返回值的时候非常有用。
+
+**可选值Optionals**<br />
+当一个值可能不存在时可以使用*optionals*。一个可选值代表：
+* 有值，并等同x
+* 或者没有任何值
+
+在C和Objective-C中不存在optionals的概念。
+{% highlight js %}
+let possibleNumber = "123"
+let  convertedNumber = possibleNumber.toInt()
+// convertedNumber is infferred to be of type "Int?", or "optional Int"
+{% endhighlight %}
+因为`toInt`方法可能失败，所以返回的是*optional* Int，而不是Int（返回结果可能是`Int`或者没有任何东西）
+
+**If语句和强制展开（Forced Unwrapping）**<br />
+你可以使用`if`语句来判断一个optional是否包含值，如果有的话则为`true`，否则为`false`。
+在optional名字后面加!表示该optioonal确定是有值的，可以使用：
+{% highlight js %}
+if convertedNumber {
+    println("\(possibleNumber) has an integer value of \(convertedNumber!)")
+} else {
+    println("\possibleNumber) could not be converted to an integer")
+}
+// prints "123 has an integer value of 123"
+{% endhighlight %}
+
+**Optional Binding**<br />
+*optional binding*用来确定一个optional是否有值，主要用于`if`和`while`语句：
+{% highlight js %}
+if let constantName = someOptional {
+    statements
+}
+{% endhighlight %}
+
+**nil**<br />
+把一个optional变量赋值为`nil`的时候就是将其状态设置为无值状态：
+{% highlight js %}
+var serverResponseCode: Int? = 404
+// serverResponseCode contains an actual Int value of 404
+serverResponseCode = nil
+// serverResponseCode now contains no value
+{% endhighlight %}
+`nil`不能用于non-optional的常量和变量。
+
+**隐式展开Optionals**<br />
+如果一个optional是确定会一直有值的，那么只要用`!`代替`?`就可以了：
+{% highlight js %}
+let possibleString: String? = "An optional string."
+println(possibleString!) // requires an exclamation mark to access its value
+// prints "An optional string."
+let assumedString: String! = "An implicitly unwrapped optional string."
+println(assumedString)  // no exclamation mark is needed to access its value
+// prints "An implicitly unwrapped optional string.
+{% endhighlight %}
+
+**判定（Assertions）**<br />
+可以通过`assertion`来判定无效的value，终止代码的执行。
+
+**使用Assertions调试**<br />
+{% highlight js %}
+let age = -3
+assert(age >= 0, "A person's age cannot be less than zero")
+// this causes the assertion to trigger, because age is not >=0
+{% endhighlight %}
+也可以不是用assertion message：
+{% highlight js %}
+assert(age >= 0)
+{% endhighlight %}
+
+**什么时候使用Assertions**<br />
+当一个条件有可能为false的时候使用assertion，但是必须为true才能让代码继续执行下去。合适的场景包括：
+* 整型下标索引传入到自定义下标实现，但是索引的值可能太小或太大。
+* 函数传参，无效值意味着函数无法完成其任务。
+* 一个optional值当前为nil，但必须为non-nil值才能继续执行下去。

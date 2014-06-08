@@ -1,0 +1,77 @@
+---
+layout: post
+title: Swift编程语言（3）
+category: swift
+url: Swift-3.html
+summary: 《The Swift Programming Language》的学习翻译，基本操作符
+---
+###基本操作符
+操作符包括一元（unary）、二元（binary）、三元（ternary）操作符。
+
+**赋值操作符**<br />
+`a = b`初始化或更新a的值为b。
+{% highlight js %}
+let b = 10
+var a = 5
+a = b
+// a is now equal to 10
+
+let (x, y) = (1, 2)
+// x is equal to 1, and y is equal to 2
+{% endhighlight %}
+
+**算术操作符**<br />
+`+, -, *, /`加减乘除，与C和Object-C不同，不允许值溢出，加支持字符串相加。
+
+**取余操作符**<br />
+与C和Object-C不同，Swift支持浮点数的取余操作：
+{% highlight js %}
+8 % 2.5 // equals 0.5
+{% endhighlight %}
+
+**自增和自减操作符**<br />
+
+**单元减操作符（Unary Minus Operator）**<br />
+数值的符号可以通过前缀`-`来表示有无，即*unary minus operator*：
+{% highlight js %}
+let three = 3
+let minusThree = -three //minusThree equals -3
+let plusThree = -minusThree // plusThree equals 3, or "minus minus three"
+{% endhighlight %}
+
+**单元加操作符（Unary Plus Operator）**<br />
+无任何影响，可以用来表示正值。
+
+**组合赋值操作符**<br />
+比如`&=, +=, ...`等
+
+**比较操作符**<br />
+包括`==, !=, >, <, >=, <=`。
+Swift同样提供了`===, !==`来判断两个对象引用是否指向同一个对象实例。
+
+**三元条件操作符**<br />
+`question ? answer1 : answer2`，是`if-else`简短版本。
+
+**范围操作符**<br />
+包括两个。
+
+**闭范围操作符**<br />
+`a...b`定义了从a到b的范围，包括a和b，范围操作符在迭代时候使用。如`for-in`：
+{% highlight js %}
+for index in 1...5 {
+    println("\(index) times 5 is \(index * 5)")
+}
+{% endhighlight %}
+
+**半闭范围操作符**<br />
+`a..b`包括a，不包括b。
+{% highlight js %}
+let names = ["Anna", "Alex", "Brian", "Jack"]
+let count = names.count
+for i in 0..count {
+    println("Person \(i + 1) is called \(names[i])")
+}
+{% endhighlight %}
+
+**逻辑操作符**<br />
+`!, &&, ||`即“与或非”。

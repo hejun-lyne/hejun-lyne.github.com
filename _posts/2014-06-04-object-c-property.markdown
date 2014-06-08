@@ -1,60 +1,42 @@
 ---
 layout: post
-title: 关于strong,weak,copy,assign,atomic
-category: markdown
-url: Samples.html
-summary: 如何使用markdown编写post
+title: 关于Object-C的属性修饰词strong,weak等
+category: object-c
+url: object-c-property.html
+summary: 关于Object-C的Property的修饰词strong,weak...的一些分析
 ---
+####retain
+我们先说retain，retain的意思是“保留，保持”，其实Object-C里面的关键字都是非常直白的，这里“保持”的意思就是“我要保持一个引用，不关心别人怎么做”，体现出来就是`count++`；除非你主动释放，否则所引用的对象会一直有效，我们可以做下面的代码测试：
 
-# Samples
-
-# Heading 1
-
-## Heading 2
-
-### Heading 3
-
-#### Heading 4
-
-##### Heading 5
-
-###### Heading 6
-
-### Body text
-
-**Lorem ipsum dolor sit amet**, consectetur adipiscing elit. Quisque tempus nunc diam, non dignissim risus tincidunt a. Curabitur consequat justo vitae ipsum accumsan tempor. Quisque rhoncus eleifend ante vitae ultricies. Pellentesque suscipit nisl ut metus tincidunt, vulputate sodales dui commodo. Sed eget sapien varius, lacinia lectus nec, tempor dolor. Pellentesque sed mattis magna. Curabitur ut tristique turpis. Morbi sagittis dolor suscipit urna placerat, consectetur venenatis sapien viverra. Mauris vitae felis et sem venenatis cursus.
-
-
-![Image]({{ site.baseurl }}/images/cc.jpg)
-
-
-Donec ornare turpis non ullamcorper pulvinar. *Integer ut mauris vehicula mauris posuere adipiscing.* Phasellus dictum cursus convallis. Sed dapibus laoreet porttitor.
-
-### Blockquotes
-
-> Fusce non eleifend nisi. Donec pharetra sed ipsum sit amet sollicitudin. Duis dolor ante, gravida varius neque eget, semper commodo libero. In euismod tempor lobortis. Nulla eget lectus nec enim mattis aliquet a sit amet est.
-
-## List Types
-
-### Lists
-
-1. Item One
-   1. sub one
-   2. sub two
-   3. sub three
-2. Item Two
-
-* Uno
-* Dos
-* Tres
-
-
-
-## Code
-
-{% highlight python %}
-class node:
-	def __init__(self, data, next=None):
-		self.data = data
-		self.next = next
+{% highlight objc %}
+// 声明一个class
+@interface TestObject : NSObject
+@end
+@implementation TestObject
+- (NSString *)description {
+    return @"Test";
+}
+@end
+//
+// 声明retain property
+@interface Tester : NSObject
+@property (nonatomic, retain)TestObject *retainObject;
+@end
+@implementation Tester
+@synthesize retainObject;
+@end
+//
+// main.m
+Tester *tester = [Tester new];
+TestObject *obj = [TestObject new];
+tester.retainObject = obj;
+NSLog(@"%@", tester.retainObject);
+obj = nil;
+NSLog(@"%@", tester.retainObject);
+// Outputs: 
+// Test
+// Test
+//
 {% endhighlight %}
+
+####strong

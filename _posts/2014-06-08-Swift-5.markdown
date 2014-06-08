@@ -1,0 +1,199 @@
+---
+layout: post
+title: Swift编程语言（5）
+category: swift
+url: Swift-5.html
+summary: 《The Swift Programming Language》的学习翻译，集合类型
+---
+####集合类型
+Swift提供了两种集合类型*arrays*和*dictionaries*
+
+**数组（Arrays）**<br />
+与Object-C的`NSArray`和`NSMutableArray`不同，Swift的数组必须要明确存储的数据类型，而且只能存放一种类型的数据。
+
+**数组类型简写**<br />
+`Array<SomeType>`，也可以`SomeType[]`。
+
+**Array Literals**<br />
+{% highlight js %}
+var shoppingList: String[] = ["Eggs", "Milk"]
+{% endhighlight %}
+通过Type Reference，也可以不需要指明类型：
+{% highlight js %}
+var shoppingList = ["Eggs", "Milk"]
+{% endhighlight %}
+
+**访问和修改数组**<br />
+使用下标格式访问。
+数组数量可以使用read-only属性`count`。
+使用`isEmpty`属性可以知道`count`是否为0.
+使用`append`方法添加元素：
+{% highlight js %}
+shoppingList.append("Flour")
+{% endhighlight %}
+还可以直接使用`+=`操作符：
+{% highlight js %}
+shoppingList += "Baking Powder"
+{% endhighlight %}
+可以直接`+=`另外一个数组：
+{% highlight js %}
+shoppingLis += ["Chocolate Spread", "Cheese", "Butter"]
+{% endhighlight %}
+使用下标来访问元素：
+{% highlight js %}
+var firstItem = shoppingList[0]
+// firstItem isequal to "Eggs"
+{% endhighlight %}
+使用下标直接修改元素：
+{% highlight js %}
+shoppingList[0] = "Six eggs"
+// the first item in the list is now equal to "Six eggs" rather than Eggs"
+{% endhighlight %}
+还可以直接使用范围操作符修改多个元素，即使长度不一致也可以：
+{% highlight js %}
+shoppingList[4...6] = ["Bananas", "Apples"]
+{% endhighlight %}
+如果要在特定位置插入元素，使用`insert(atindex:)`方法：
+{% highlight js %}
+shoppinglist.insert("Maple Syrup", atIndex: 0)
+{% endhighlight %}
+使用`removeAtIndex`移除特定位置元素：
+{% highlight js %}
+ let mapleSyrup = shoppingList.removeAtIndex(0)
+{% endhighlight %}
+移除最后一个元素：
+{% highlight js %}
+let apples = shoppingList.removeLast()
+{% endhighlight %}
+
+**遍历数组**<br />
+使用`for-in`：
+{% highlight js %}
+for item in shoppingList {
+    println(item)
+}
+{% endhighlight %}
+还可以使用global函数`enumerate`：
+{% highlight js %}
+for (index, value) in enumerate(shoppingList) {
+    println("Item \(index + 1): \(value)")
+}
+{% endhighlight %}
+
+**创建和初始化数组**<br />
+{% highlight js %}
+var someInts = Int[]()
+{% endhighlight %}
+可以再次使用`[]`来清空数组：
+{% highlight js %}
+someInts.append(3)
+// someInts now contains 1 value of type Int
+someInts = []
+// someInts is now an empty array，but is still of type Int[]
+{% endhighlight %}
+可以在初始化的时候指定数量和默认值：
+{% highlight js %}
+var threeDoubles = Double[](count: 3, repeatedValue: 0.0)
+// threeDouble is of type Double[], and equals [0.0, 0.0, 0.0]
+
+// or 
+var anotherThreeDoubles = Array(count: 3, repeatedValue: 2.5)
+{% endhighlight %}
+
+####字典（Dictionaries）
+字典的类型需要指定（不同于`NSDictionary`和`NSMutableDictionary`）：`Dictionary<KeyType, ValueType>`，`KeyType`必须是*hashable*的。所有Swift的基本类型（`String`, `Int`, `Doubel`, `Bool`）都是hashable的，枚举的成员值也是可以的。
+
+**Dictionary Literals**<br />
+{% highlight js %}
+var airports: Dictionary<String, String> = ["TYO": "Tokyo", "DUB": "Dublin"]
+{% endhighlight %}
+同样可以不需要显式指定类型：
+{% highlight js %}
+var airports = ["TYO": "Tokyo", "DUB": "Dublin"]
+{% endhighlight %}
+
+**访问和修改字典**<br />
+使用read-only属性`count`知道元素数量。
+直接往字典添加元素：
+{% highlight js %}
+airports["LHR"] = "London"
+{% endhighlight %}
+修改也是一样的：
+{% highlight js %}
+ariports["LHR"] = "London Heathrow"
+{% endhighlight %}
+还可以使用方法`updateValue(forKey:)`更新或者添加（不存在的情况下）元素，该方法返回的是字典的值类型的optional value（如`String?`），如果原来有该key-value的话是old value，如果没有的话则为`nil`。
+{% highlight js %}
+if let oldValue = airports.updateValue("Dublin International", forKey: "DUB") {
+    println("The old value for DUB was \(oldValue)")
+}
+// prints "The old value for DUB was Dublin"
+{% endhighlight %}
+使用key访问元素的值，返回的是optional-value：
+{% highlight js %}
+if let airportName = aiports["DUB"] {
+    println("The name of the airport is \(airportName).")
+} else {
+    println("That airport is not in the airports dictionary.")
+}
+{% endhighlight %}
+将对应key的value赋值为`nil`相当于移除该条记录，也可以使用方法`removeValueForKey`。
+{% highlight js %}
+airports["APL"] = "Apple International"
+airports["APL"] = nil
+
+// or
+if let removeValue = airports.removeValueForKey("DUB") {
+    println("The removed airport's name is \(removedValue).")
+} else {
+    println("The airports dictionary does not contain a value for DUB.")
+}
+{% endhighlight %}
+
+**遍历字典**<br />
+使用`for-in`：
+{% highlight js %}
+for (airportCode, airportName) in airports {
+    println("\(airportCode): \(airportName)")
+}
+{% endhighlight %}
+可以通过属性`keys`和`values`得到可遍历的集合：
+{% highlight js %}
+for airportCode in airports.keys {
+    println("Airport code: \(airportCode)")
+}
+// Airport code: TYO
+// Airport code: LHR
+ 
+for airportName in airports.values {
+    println("Airport name: \(airportName)")
+}
+// Airport name: Tokyo
+// Airport name: London Heathrow
+{% endhighlight %}
+可以初始化成一个新的数组（无序）以便使用：
+{% highlight js %}
+let airportCodes = Array(airports.keys)
+// airportCodes is ["TYO", "LHR"]
+ 
+let airportNames = Array(airports.values)
+// airportNames is ["Tokyo", "London Heathrow"]
+{% endhighlight %}
+
+**创建空字典**<br />
+{% highlight js %}
+var namesOfIntegers = Dinctionary<Int, String()
+{% endhighlight %}
+如果上下文（context）已经提供了类型信息，那么可以使用`[:]`置空：
+{% highlight js %}
+namesOfIntegers[16] = "sixteen"
+// namesOfIntegers now contains 1 key-value pair
+namesOfIntegers = [:]
+// namesOfIntegers is once again an empty dictionary of type Int, String
+{% endhighlight %}
+
+####集合的可变性（Mutability）
+变量可变，常量不可变。
+数组的不可变指size不可变，但可以改变某一index的值，这个影响到了数组实例的赋值和修改。
+字典的不可变是size，key-value都不可变。
+>可能的话尽量使用immutable集合，可以让Swift编译器更好优化性能。

@@ -1,0 +1,300 @@
+---
+layout: post
+title: Swift编程语言（7）
+category: swift
+url: Swift-7.html
+summary: 《The Swift Programming Language》的学习翻译，函数
+---
+###函数
+Swift中的函数都有一个由参数类型和返回类型的类型（type）。你可以像使用其他类型一样使用这个类型，比如作为其他函数的参数。函数还可以嵌套在另一个函数内部。
+
+####定义和调用函数
+和其他语言一样由函数名、参数列表和返回类型组成：
+{% highlight js %}
+func sayHello(personName: String) -> String {
+    let greeting = "Hello, " + personName + "!"
+    return greeting
+}
+{% endhighlight %}
+调用的话也是一样的：
+{% highlight js %}
+println(sayHello("Anna")
+// prints "Hello Anna!"
+{% endhighlight %}
+
+####函数参数和返回值
+在Swift提供了非常灵活的使用方式。
+
+**多输入参数**<br />
+{% highlight js %}
+func halfOpenRangeLength(start: Int, end: Int) -> Int {
+    return end - start
+}
+println(halfOpenRangeLength(1, 10))
+// prints "9"
+{% endhighlight %}
+
+**无参数函数**<br />
+{% highlight js %}
+func sayHelloWorld() -> String {
+    return "hello, world"
+}
+println(sayHelloWorld())
+// prints "hello, world"
+{% endhighlight %}
+
+**无返回值参数**<br />
+{% highlight js %}
+unc sayGoodbye(personName: String) {
+    println("Goodbye, \(personName)!")
+}
+sayGoodbye("Dave")
+// prints "Goodbye, Dave!"
+{% endhighlight %}
+>实际是返回`void`，等同于无元素的元组`()`
+在调用函数的时候可以不理会其返回值。
+
+**有多个返回值的函数**<br />
+可以使用元组（tuple）返回多个值：
+{% highlight js %}
+func count(string: String) -> (vowels: Int, consonants: Int, others: Int) {
+    var vowels = 0, consonants = 0, others = 0
+    for character in string {
+        switch String(character).lowercaseString {
+        case "a", "e", "i", "o", "u":
+            ++vowels
+        case "b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
+        "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z":
+            ++consonants
+        default:
+            ++others
+        }
+    }
+    return (vowels, consonants, others)
+}
+{% endhighlight %}
+使用该函数：
+{% highlight js %}
+let total = count("some arbitrary string!")
+println("\(total.vowels) vowels and \(total.consonants) consonants")
+// prints "6 vowels and 13 consonants
+{% endhighlight %}
+
+####函数参数名
+上面函数中的参数名只能在函数体内使用，称之为*局部参数名（local parameter names）*。
+
+**外部（External）参数名**<br />
+如果希望使用函数的用户调用函数时候提供自己的参数名，则可以使用外部参数名：
+{% highlight js %}
+func someFunction(externalParameterName localParameterName: Int) {
+    // function body goes here, and can use localParameterName
+    // to refer to the argument value for that parameter
+}
+{% endhighlight %}
+>如果定义了外部参数名那么调用的时候必须一直使用外部参数名。
+{% highlight js %}
+func join(string s1: String, toString s2: String, withJoiner joiner: String)
+    -> String {
+        return s1 + joiner + s2
+}
+{% endhighlight %}
+则如下调用：
+{% highlight js %}
+join(string: "hello", toString: "world", withJoiner: ", ")
+// returns "hello, world
+{% endhighlight %}
+>在函数名字的可读性不太好的时候使用外部参数名，如果函数本身已经有良好的可读性了就不需要再使用了。
+
+**外部参数名缩写**<br />
+如果局部参数名已经合适作为外部参数名了，那么可以不用重复写两遍，使用`#`来表示：
+{% highlight js %}
+func containsCharacter(#string: String, #characterToFind: Character) -> Bool {
+    for character in string {
+        if character == characterToFind {
+            return true
+        }
+    }
+    return false
+}
+{% endhighlight %}
+
+**默认参数值**<br />
+可以为任一个参数定义默认值，如果这么做了，那么调用函数的时候可以省略掉该参数。
+{% highlight js %}
+func join(string s1: String, toString s2: String,
+    withJoiner joiner: String = " ") -> String {
+        return s1 + joiner + s2
+}
+{% endhighlight %}
+调用的时候可以不需要最后一个参数：
+{% highlight js %}
+join(string: "hello", toString: "world")
+// returns "hello world"
+{% endhighlight %}
+
+**带默认值的参数的外部名字**<br />
+有时候为那些有默认值的参数提供外部名字会让函数调用更加清晰，默认情况下Swift为这种参数提供了和局部参数名一样的外部参数名。<br />
+比如前面那个函数可以这样定义：
+{% highlight js %}
+func join(s1: String, s2: String, joiner: String = " ") -> String {
+    return s1 + joiner + s2
+}
+{% endhighlight %}
+调用的时候：
+{% highlight js %}
+join("hello", "world", joiner: "-")
+// returns "hello-world"
+{% endhighlight %}
+
+**可变参数（Variadic Parameters）**<br />
+可变参数可以接受0个或多个特定类型的值。在参数类型名后面使用`...`来表示，在函数体内该参数作为数组使用：
+{% highlight js %}
+func arithmeticMean(numbers: Double...) -> Double {
+    var total: Double = 0
+    for number in numbers {
+        total += number
+    }
+    return total / Double(numbers.count)
+}
+arithmeticMean(1, 2, 3, 4, 5)
+// returns 3.0, which is the arithmetic mean of these five numbers
+arithmeticMean(3, 8, 19)
+// returns 10.0, which is the arithmetic mean of these three numbers
+{% endhighlight %}
+>一个函数最多只能有一个可变参数，而且必须是参数列表的最后一个。
+
+**常量和变量参数**<br />
+函数的参数默认是常量，所以不能在函数体内改变其值。如果需要使用变量参数需要使用`var`关键字：
+{% highlight js %}
+func alignRight(var string: String, count: Int, pad: Character) -> String {
+    let amountToPad = count - countElements(string)
+    for _ in 1...amountToPad {
+        string = pad + string
+    }
+    return string
+}
+let originalString = "hello"
+let paddedString = alignRight(originalString, 10, "-")
+// paddedString is equal to "-----hello"
+// originalString is still equal to "hello"
+{% endhighlight %}
+>即使是变量参数其改变也只在函数内部生效，不影响函数外部。
+
+**输入输出（In-Out）参数**<br />
+如果需要让参数的改变在外部也生效，则需要使用输入输出参数，在参数最前面加入关键字`inout`，这种参数不能传递常量，只能传递变量（在变量名字前添加`&`，表示作为输入输出参数，可以被函数修改）。
+>输入输出函数不能有默认值，`inout`只能单独使用，不能和`var`或`let`共用。
+{% highlight js %}
+func swapTwoInts(inout a: Int, inout b: Int) {
+    let temporaryA = a
+    a = b
+    b = temporaryA
+}
+{% endhighlight %}
+调用如下：
+{% highlight js %}
+var someInt = 3
+var anotherInt = 107
+swapTwoInts(&someInt, &anotherInt)
+println("someInt is now \(someInt), and anotherInt is now \(anotherInt)")
+// prints "someInt is now 107, and anotherInt is now 3
+{% endhighlight %}
+
+####函数类型
+每一个函数都有一个特别的*函数类型*，偶遇参数类型和返回类型组成。
+例如：
+{% highlight js %}
+func addTwoInts(a: Int, b: Int) -> Int {
+    return a + b
+}
+func multiplyTwoInts(a: Int, b: Int) -> Int {
+    return a * b
+}
+{% endhighlight %}
+上面两个函数的类型均为`(Int, Int) -> Int`
+如果参数和返回都没有，则类型为`() -> ()`。
+
+**使用函数类型**<br />
+你可以把函数赋值给变量：
+{% highlight js %}
+var mathFunction: (Int, Int) -> Int = addTwoInts
+{% endhighlight %}
+然后通过变量调用函数：
+{% highlight js %}
+println("Result: \(mathFunction(2, 3))")
+// prints "Result: 5
+{% endhighlight %}
+同样类型的不同函数可以赋值给相同变量：
+{% highlight js %}
+mathFunction = multiplyTwoInts
+println("Result: \(mathFunction(2, 3))")
+// prints "Result: 6"
+{% endhighlight %}
+如果是声明变量也可以不写类型（Swift可以通过推断得知）：
+{% highlight js %}
+let anotherMathFunction = addTwoInts
+// anotherMathFunction is inferred to be of type (Int, Int) -> Int
+{% endhighlight %}
+
+**函数类型作为参数类型**<br />
+既然函数类型和其他类型一样，那么也可以作为参数类型：
+{% highlight js %}
+func printMathResult(mathFunction: (Int, Int) -> Int, a: Int, b: Int) {
+    println("Result: \(mathFunction(a, b))")
+}
+printMathResult(addTwoInts, 3, 5)
+// prints "Result: 8
+{% endhighlight %}
+
+**函数类型作为返回类型**<br />
+同理：
+{% highlight js %}
+func stepForward(input: Int) -> Int {
+    return input + 1
+}
+func stepBackward(input: Int) -> Int {
+    return input - 1
+}
+
+func chooseStepFunction(backwards: Bool) -> (Int) -> Int {
+    return backwards ? stepBackward : stepForward
+}
+
+var currentValue = 3
+let moveNearerToZero = chooseStepFunction(currentValue > 0)
+// moveNearerToZero now refers to the stepBackward() function
+
+println("Counting to zero:")
+// Counting to zero:
+while currentValue != 0 {
+    println("\(currentValue)... ")
+    currentValue = moveNearerToZero(currentValue)
+}
+println("zero!")
+// 3...
+// 2...
+// 1...
+// zero!
+{% endhighlight %}
+
+####嵌套函数
+指的是在函数内部定义其他函数，上面的代码可以改造为：
+{% highlight js %}
+func chooseStepFunction(backwards: Bool) -> (Int) -> Int {
+    func stepForward(input: Int) -> Int { return input + 1 }
+    func stepBackward(input: Int) -> Int { return input - 1 }
+    return backwards ? stepBackward : stepForward
+}
+var currentValue = -4
+let moveNearerToZero = chooseStepFunction(currentValue > 0)
+// moveNearerToZero now refers to the nested stepForward() function
+while currentValue != 0 {
+    println("\(currentValue)... ")
+    currentValue = moveNearerToZero(currentValue)
+}
+println("zero!")
+// -4...
+// -3...
+// -2...
+// -1...
+// zero!
+{% endhighlight %}

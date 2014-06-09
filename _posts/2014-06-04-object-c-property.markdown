@@ -67,6 +67,11 @@ if (tester.strongObject) {
 }
 // print "strong is not nil"
 {% endhighlight %}
+**预防强引用循环**<br />
+强引用循环的对象将永远不能被释放，比如UITableView引用了其delegate，而其delegate有引用回了该tableView。<br />
+![Image]({{ site.baseurl }}/images/strongreferencecycle2.png)<br /><br />
+正确的应该是：<br /><br />
+![Image]({{ site.baseurl }}/images/strongreferencecycle3.png)
 
 ####weak
 `weak`是与`strong`相对的“弱引用”，不会影响“Reference count”，如果对象通过*garbage collection*从堆中被回收了，那么该指针会被自动置为`nil`。（reference count = 0与garbage collection无必然联系，意味着即使reference count = 0，该指针也不会马上变为`nil`）
@@ -143,3 +148,15 @@ if (tester.weakObject) {
 // print "copy is not nil"
 // print "weak is nil"
 {% endhighlight %}
+
+#####readonly
+`realonly`表示属性是只读的，不能通过`setter`方法对其进行修改。
+
+####readwrite
+`readwrite`是默认值，不需要显式的声明。
+
+####atomic
+所有的属性默认都是`atomic`的，`atomic`显然表示原子行为，说明是线程安全的。你不能为`atomic`的属性自定义setter和getter。
+
+####nonatomic
+`nonatomic`意味着不是线程安全的，可以同时被多个线程访问，如果同时有线程调用getter和setter的话，没办法保证返回的值。

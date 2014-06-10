@@ -1,0 +1,151 @@
+---
+layout: post
+title: Swift编程语言（8）
+category: swift
+url: Swift-8.html
+summary: 《The Swift Programming Language》的学习翻译，闭包
+---
+###闭包（Closures）
+闭包是自包含的功能代码块，可以在你的代码中传递并使用。<br />
+闭包会在其定义的context捕获并保存任何的常量和变量引用。这称为这些常量和变量的*关闭(closing)*，这也是闭包的来源。<br />
+全局和嵌套函数属于闭包的特殊情况。闭包一般有以下三种形式：
+* 全局函数属于只有名字而没有捕获任何值的闭包。
+* 嵌套函数属于有名字并且能够从包围（enclosing）函数捕获值的闭包。
+* 闭包表达式是能够在它们的上下文捕获值的未命名闭包的轻量写法。
+
+
+####闭包表达式
+闭包表达式是写inline闭包的简短的方式。下面用闭包表达式来看看`sort`方法的写法。
+
+**Sort函数**<br />
+Swift的标准库提供了用来对数组排序的函数`sort`。
+{% highlight js %}
+let names = ["Charis", "Alex", "Ewa", "Barry", "Daniella"]
+{% endhighlight %}
+我们要实现的排序函数类型是`(String, String) -> Bool`。
+一种提供排序闭包的方式是写这样类型的一个普通的函数，传递给`sort`函数的第二个参数：
+{% highlight js %}
+func backwards(s1: String, s2: String) -> Bool {
+    return s1 > s2
+}
+var reversed = sort(names, backwards)
+// reversed is equal to ["Ewa", "Daniella", "Chris", "Barry", "Alex"]
+{% endhighlight %}
+
+**闭包表达式格式**<br />
+{% highlight js %}
+{ (parameters) -> return type in
+    statements
+}
+{% endhighlight %}
+可以使用常量参数、变量参数和`inout`参数。不能使用默认值。可以使用Variadic参数，元组可以作为参数或返回类型。<br />
+下面是`backwards`函数的闭包表达式版本：
+{% highlight js %}
+reversed = sort(names, { (s1: String, s2: String) -> Bool in 
+    return s1 > s2
+})
+{% endhighlight %}
+
+**从上下文（Context）推断类型
+因为排序闭包是作为函数参数，所有Swift可以推断参数的类型。所以我们其实可以这样写：
+{% highlight js %}
+reversed = sort(names, { s1, s2 in return s1 > s2 })
+{% endhighlight %}
+
+**单表达式闭包的隐式返回**<br />
+这种情况可以省略`return`关键字：
+{% highlight js %}
+reversed = sort(names, { s1, s2 in s1 > s2 })
+{% endhighlight %}
+
+**参数名字的缩写**<br />
+Swift为inline closures自动提供来缩写的参数名字：`$0`, `$1`, `$2`...<br />
+所以可以进一步简化为：
+{% highlight js %}
+reversed = sort(names, {$0 > $1 })
+{% endhighlight %}
+
+**操作符函数（Operator Functions）**<br />
+我们还可以把上面闭包表达式写的更加简短。`>`作为两个String类型输入参数和返回Bool类型，已经完全匹配`sort`函数的第二个参数了。
+{% highlight js %}
+reversed = sort(names, >)
+{% endhighlight %}
+
+####尾随闭包（Trailing Closures）
+如果需要传递闭包表达式到函数的最后一个参数，但是闭包表达式很长，那么可以使用*尾随闭包*：
+{% highlight js %}
+func someFunctionThatTakesAClosure(closure: () -> ()) {
+    // function body goes here
+}
+ 
+// here's how you call this function without using a trailing closure:
+ 
+someFunctionThatTakesAClosure({
+    // closure's body goes here
+    })
+ 
+// here's how you call this function with a trailing closure instead:
+ 
+someFunctionThatTakesAClosure() {
+    // trailing closure's body goes here
+}
+{% endhighlight %}
+>如果函数只有一个闭包表达式参数，并且为尾随闭包，那么在调用函数的时候不需要写函数后面的括号`()`。
+
+我们前面的`sort`方法调用可以改为：
+{% highlight js %}
+reversed = sort(names) { $0 > $1 }
+{% endhighlight %}
+下面看Swift的另外一个方法`map`，这个方法只有一个闭包表达式参数：
+{% highlight js %}
+let digitNames = [
+    0: "Zero", 1: "One", 2: "Two",   3: "Three", 4: "Four",
+    5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine"
+]
+let numbers = [16, 58, 510]
+
+let strings = numbers.map {
+    (var number) -> String in
+    var output = ""
+    while number > 0 {
+        output = digitNames[number % 10]! + output
+        number /= 10
+    }
+    return output
+}
+// strings is inferred to be of type String[]
+// its value is ["OneSix", "FiveEight", "FiveOneZero"]
+{% endhighlight %}
+
+####捕获值
+一个闭包可以从其定义的周围的上下文*捕获*常量和变量。可以稍后引用并且改变它们的值，即使它们原来的作用域已经不存在了。
+{% highlight js %}
+func makeIncrementor(forIncrement amount: Int) -> () -> Int {
+    var runningTotal = 0
+    func incrementor() -> Int {
+        runningTotal += amount
+        return runningTotal
+    }
+    return incrementor
+}
+{% endhighlight %}
+下面是这个方法调用的例子：
+{% highlight js %}
+let incrementByTem = makeIncrementor(forIncrement: 10)
+
+incrementByTen()
+// returns a value of 10
+incrementByTen()
+// returns a value of 20
+incrementByTen()
+// returns a value of 30
+{% endhighlight %}
+>如果你将一个闭包赋值给一个类实例，并且该闭包又通过引用该实例或其成员捕获了该实例，那么你会创建了一个strong引用循环。Swift使用*capture list*来打破strong引用循环。
+
+####闭包属于引用类型（Reference Type）
+你如果给不同的变量或常量赋予了同一个闭包，那么它们是指向同一个闭包：
+{% highlight js %}
+let alsoIncrementByTen = incrementByTen
+alsoIncrementByTen()
+// returns a value of 50
+{% endhighlight %}

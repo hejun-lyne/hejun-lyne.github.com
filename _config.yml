@@ -12,7 +12,7 @@ diandian: http://hejun-lyne.diandian.com/
 email: hejun.lyne@gmail.com
 location: 30.280738°N   120.027854°E
 disqus: hejun
-classes: ["swift", "object-c", "java", "node", "jekyll", "markdown"]
+classes: ["oauth","swift", "object-c", "java", "node", "jekyll", "markdown"]
 
 ##Make sure to edit the above fields, especially for disqus.
 

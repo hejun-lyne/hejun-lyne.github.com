@@ -7,22 +7,22 @@ summary: 如何使用免费的AdHoc平台进行App测试
 ---
 
 ####[HockeyApp](http://hockeyapp.net/)
-同时支持iOS、Android和Windows Phone。
-Mac客户端非常好用，下载之后直接引导如何将HockeyApp.SDK配置到本地工程，而且本地工程每次Achieve之后会自动提示上传新版本。
-HockeyApp.SDK可以自动收集App的崩溃日志，支持版本自动更新。
-如果是iOS App发布到AppStrore完全不需要进行额外的工作，HockeyApp会自动禁用一切功能，非常贴心。
-经过测试HockeyApp对iOS的支持是完全OK的，不过不太方便的一点就是要求所有的Tester都必须注册账号，不过作为一个测试平台来说也算合理的。
-
+同时支持iOS、Android和Windows Phone。<br />
+Mac客户端非常好用，下载之后直接引导如何将HockeyApp.SDK配置到本地工程，而且本地工程每次Achieve之后会自动提示上传新版本。<br />
+HockeyApp.SDK可以自动收集App的崩溃日志，支持版本自动更新。<br />
+如果是iOS App发布到AppStrore完全不需要进行额外的工作，HockeyApp会自动禁用一切功能，非常贴心。<br />
+经过测试HockeyApp对iOS的支持是完全OK的，不过不太方便的一点就是要求所有的Tester都必须注册账号，不过作为一个测试平台来说也算合理的。<br />
+<br />
 ####[FIR](http://fir.im/)
-来自北京的一家创业公司的产品，感觉名字好奇怪，不知道为什么叫这个名字。
-使用非常简单，对于iOS App直接上传IPA文件即可，但是测试安装无法成功，而且也没有安装企业证书的过程，难道不需要企业证书也可以Ad-Hoc发布？你们这么牛B，苹果知道吗，哈哈～
-配置简单也导致功能不是特别全，像崩溃日志搜集这些是没有的，可能也是定位成App发布平台的原因。
-
+来自北京的一家创业公司的产品，感觉名字好奇怪，不知道为什么叫这个名字。<br />
+使用非常简单，对于iOS App直接上传IPA文件即可，但是测试安装无法成功，而且也没有安装企业证书的过程，难道不需要企业证书也可以Ad-Hoc发布？你们这么牛B，苹果知道吗，哈哈～<br />
+配置简单也导致功能不是特别全，像崩溃日志搜集这些是没有的，可能也是定位成App发布平台的原因。<br />
+<br />
 ####[内测宝](http://neicebao.com/)
-名字好土！也不知道用起来土不土，现在还是在测试阶段。
-不过在页面看到了UDID小工具，额....
-看来是比不上HockeyApp好用的了
-
+名字好土！也不知道用起来土不土，现在还是在测试阶段。<br />
+不过在页面看到了UDID小工具，额....<br />
+看来是比不上HockeyApp好用的了<br />
+<br />
 ####[DeployGate](https://deploygate.com/)
-很难得居然有中文支持的国外平台，就从这点来看做的比HockeyApp好。
-目前的版本只支持Android，而且好像还是需要付费的，而iOS目前还只是Beta
+很难得居然有中文支持的国外平台，就从这点来看做的比HockeyApp好。<br />
+目前的版本只支持Android，而且好像还是需要付费的，而iOS目前还只是Beta<br />

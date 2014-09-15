@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ page.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif] d-->
+    </head>
+    <body>
+
+<div class="recent-posts">
+    <div style="width: 80%; margin:auto; text-align:center">
+        <img src="qr.png">
+        <p><a href="http://irbox.haituke.com/app/easyhome.apk">http://irbox.haituke.com/app/easyhome.apk</a></p>
+    </div>
+</div>
+</body>
+
